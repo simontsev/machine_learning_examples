@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Bandit(object):
 
@@ -64,8 +65,10 @@ def main():
         env = Environment()
         agent = Agent(env, epsilon)
 
+        data = np.empty(num_plays)
         for i in range(num_plays):
-            agent.play()
+            data[i] = agent.play()
+             
         
         print("Agent played {} times (epsilon={})".format(num_plays, epsilon))
         print("Bandit 1 wins: {}".format(agent.result[0]))
@@ -74,11 +77,16 @@ def main():
         total = np.sum(agent.result)
         print("Total wins: {}".format(total))
 
+        cumulative_average = np.cumsum(data) / (np.arange(num_plays) + 1)
         if total > best_total:
             best_total = total
             best_epsilon = epsilon
+        plt.plot(cumulative_average, label="epsilon {}".format(attempt))
 
-    print("Best epsilon {} with toal wins {}".format(best_epsilon, best_total))
+    print("Best epsilon {} with total wins {}".format(best_epsilon, best_total))
+    plt.legend()
+    plt.xscale('log')
+    plt.show()
 
 if __name__ == "__main__":
     main()
