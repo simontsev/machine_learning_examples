@@ -34,7 +34,7 @@ class Agent(object):
         self.epsilon = epsilon
         self.best_bandit_num = best_bandit_num
         self.result = np.array([0,0,0])
-        self.attempts = np.array([0,0,0])
+        self.attempts = np.array([0.0001,0.0001,0.0001])
 
     def play(self):
 
@@ -48,7 +48,7 @@ class Agent(object):
         if success == 1:
             self.result[bandit_num-1] += 1
             self.best_bandit_num = \
-                np.argmax(self.result/self.attempts.astype(float)) + 1
+                np.argmax(self.result/self.attempts) + 1
         
         return success
 
